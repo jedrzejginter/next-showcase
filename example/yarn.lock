@@ -3464,10 +3464,10 @@ neo-async@^2.5.0, neo-async@^2.6.1, neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-next-showcase@latest:
-  version "0.0.1-beta.0"
-  resolved "https://registry.yarnpkg.com/next-showcase/-/next-showcase-0.0.1-beta.0.tgz#50156bf99be5237e0bb20ee4bb662033380cfa08"
-  integrity sha512-EkQ0BXRT6HET84V+KQ69COXoC4wW5oUWUOrdNyaLS1EDvrXCNHomYi9tA0KuSL1gABea5oUh/s2y+N03PQbgkg==
+next-showcase@0.0.1-beta.1:
+  version "0.0.1-beta.1"
+  resolved "https://registry.yarnpkg.com/next-showcase/-/next-showcase-0.0.1-beta.1.tgz#0ce7534c3c00eb82a35375ceb2d3fa42b7f80bc8"
+  integrity sha512-iF7/Ah0HeBYbQD7QgtFelwHffL8vt8GxkHsAi4dKXjiBsJem3SOBLoI7309F05DfdwtiDJeiI6PRHSoUc9vFMg==
   dependencies:
     glob "^7.1.6"
 

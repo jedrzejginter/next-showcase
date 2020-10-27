@@ -6,6 +6,7 @@
   "author": "Jędrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
   "files": [
     "cli.js",
+    "showcase.sh",
     "lib"
   ],
   "main": "./lib/index.js",
