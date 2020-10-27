@@ -7,11 +7,11 @@ Alternative for Storybook working with Next.js.
 ## Installation
 
 ```bash
-yarn add --dev next-showcase
+yarn add --dev @jg-tools/next-showcase
 
 # or
 
-npm i -D next-showcase
+npm i -D @jg-tools/next-showcase
 ```
 
 ## Usage

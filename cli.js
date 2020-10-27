@@ -14,7 +14,7 @@ const x = paths.map((p) => {
 });
 
 const file = `
-import { Showcase } from "next-showcase";
+import { Showcase } from "@jg-tools/next-showcase";
 
 const storiesLoaders = {
 ${x
