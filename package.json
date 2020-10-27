@@ -6,7 +6,6 @@
   "author": "Jędrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
   "files": [
     "cli.js",
-    "example",
     "lib"
   ],
   "main": "./lib/index.js",
@@ -14,8 +13,7 @@
     "next-showcase": "./cli.js"
   },
   "scripts": {
-    "build": "tsc",
-    "publish-package": "npm publish --access public"
+    "build": "tsc"
   },
   "dependencies": {
     "glob": "^7.1.6"
