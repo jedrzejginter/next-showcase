@@ -1,7 +1,7 @@
 {
   "name": "@jg-tools/next-showcase",
   "license": "MIT",
-  "version": "0.0.1-beta.3",
+  "version": "0.0.1-beta.0",
   "repository": "git@github.com:jedrzejginter/next-showcase.git",
   "author": "Jędrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
   "files": [
