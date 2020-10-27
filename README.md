@@ -21,7 +21,7 @@ npm i -D @jg-tools/next-showcase
 Create showcase page.
 
 ```bash
-# Genrate pages/showcase.tsx
+# Genrate pages/next-showcase/index.tsx
 npx next-showcase
 ```
 
@@ -31,7 +31,7 @@ Using in watch mode:
 yarn add --dev onchange
 
 # Run showcase in watch mode
-# Updates pages/showcase.tsx on stories files changes
+# Updates pages/next-showcase/index.tsx on stories files changes
 npx onchange -v 'src/**/*.stories.*' -- npx next-showcase
 ```
 
