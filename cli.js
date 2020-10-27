@@ -12,7 +12,7 @@ const x = paths.map((p) => {
 });
 
 const file = `
-import Showcase from "./lib/Showcase";
+import { Showcase } from "next-showcase";
 
 const storiesLoaders = {
 ${x
@@ -30,4 +30,5 @@ export default function ShowcasePage() {
 `;
 
 // written in process.cwd() context
+fs.mkdirSync('pages', { recursive: true });
 fs.writeFileSync("pages/showcase.tsx", file.trim(), "utf-8");

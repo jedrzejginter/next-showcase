@@ -1,16 +1,16 @@
 {
   "name": "next-showcase",
   "license": "MIT",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "repository": "git@github.com:jedrzejginter/next-showcase.git",
   "author": "Jędrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
   "files": [
     "cli.js",
     "lib"
   ],
+  "main": "./lib/index.js",
   "bin": {
-    "next-showcase": "node ./cli.js",
-    "next-showcase-watch": "onchange -v 'src/**/*.stories.*' -- node ./cli.js"
+    "next-showcase": "./showcase.sh"
   },
   "scripts": {
     "build": "tsc"

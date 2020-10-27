@@ -22,7 +22,7 @@ npx next-showcase
 
 # Run showcase in watch mode
 # Updates pages/showcase.tsx on stories files changes
-npx next-showcase-watch
+npx next-showcase watch
 ```
 
 ## Assumptions
