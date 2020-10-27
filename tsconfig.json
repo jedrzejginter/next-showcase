@@ -9,7 +9,7 @@
     "isolatedModules": true,
     "jsx": "react",
     "lib": ["esnext"],
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "outDir": "lib",
     "resolveJsonModule": true,

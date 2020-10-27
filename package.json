@@ -1,25 +1,27 @@
 {
   "name": "next-showcase",
   "license": "MIT",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1-beta.3",
   "repository": "git@github.com:jedrzejginter/next-showcase.git",
   "author": "Jędrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
   "files": [
     "cli.js",
-    "showcase.sh",
+    "example",
     "lib"
   ],
   "main": "./lib/index.js",
   "bin": {
-    "next-showcase": "./showcase.sh"
+    "next-showcase": "./cli.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "publish-package": "npm publish --access public"
   },
   "dependencies": {
     "glob": "^7.1.6"
   },
   "devDependencies": {
+    "@types/node": "14.14.5",
     "@types/react": "16.9.53",
     "@types/react-dom": "16.9.8",
     "typescript": "4.0.5"

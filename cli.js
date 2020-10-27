@@ -1,4 +1,6 @@
+#!/usr/bin/env node
 const fs = require("fs");
+const { execSync } = require("child_process");
 const glob = require("glob");
 const path = require("path");
 
@@ -8,7 +10,7 @@ const x = paths.map((p) => {
   const modName = path.dirname(p).replace(/.*src\//, "");
   const importName = modName.replace("/", "__");
 
-  return { name: importName, source: `@/${p.replace(/.*src\//, "").replace(/\.tsx?$/, "")}` };
+  return { name: importName, source: `../../src/${p.replace(/.*src\//, "").replace(/\.tsx?$/, "")}` };
 });
 
 const file = `
@@ -30,5 +32,6 @@ export default function ShowcasePage() {
 `;
 
 // written in process.cwd() context
-fs.mkdirSync('pages', { recursive: true });
-fs.writeFileSync("pages/showcase.tsx", file.trim(), "utf-8");
+const targetFile = "pages/next-showcase/index.tsx"
+fs.mkdirSync(path.dirname(targetFile), { recursive: true });
+fs.writeFileSync(targetFile, file.trim(), "utf-8");

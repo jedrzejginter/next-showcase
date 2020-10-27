@@ -16,18 +16,31 @@ npm i -D next-showcase
 
 ## Usage
 
+**Step 1**
+
+Create showcase page.
+
 ```bash
 # Genrate pages/showcase.tsx
 npx next-showcase
+```
+
+Using in watch mode:
+
+```bash
+yarn add --dev onchange
 
 # Run showcase in watch mode
 # Updates pages/showcase.tsx on stories files changes
-npx next-showcase watch
+npx onchange -v 'src/**/*.stories.*' -- npx next-showcase
 ```
+
+**Step 2**
+
+Start your Next.js app server. Showcase will be available under `/next-showcase` url.
 
 ## Assumptions
 
 This package makes some assumptions:
 - you are using **Next.js**
 - you are using **Typescript**
-- you have custom webpack alias set – `@/*` resolves to `src/*`

@@ -30,16 +30,17 @@ function Showcase({ storiesLoaders }: Props) {
   const Comp = mod && variant && variant in mod.stories ? mod.stories[variant] : null;
 
   return (
-    <div className="fixed inset-0 overflow-auto flex items-start">
-      <ul className="w-64">
+    <div style={{ position: 'fixed', top: 0, bottom: 0, right: 0, left: 0, overflow: 'auto', display: 'flex', alignItems: 'start', zIndex: 9999  }}
+    >
+      <ul style={{ width: 300 }}>
         {Object.keys(storiesLoaders).map((name: any) => (
-          <li className="cursor-pointer hover:underline" key={name} onClick={() => load(name)}>
+          <li style={{ cursor: 'pointer' }} key={name} onClick={() => load(name)}>
             {name === mod?.name ? <mark>{name}</mark> : name}
           </li>
         ))}
       </ul>
       {mod && (
-        <div className="overflow-auto">
+        <div style={{ overflow: 'auto', maxHeight: '100vh' }}>
           <button onClick={() => setMod(null)} type="button">
             [x]
           </button>
@@ -48,7 +49,7 @@ function Showcase({ storiesLoaders }: Props) {
               .sort()
               .map((v) => {
                 return (
-                  <li className="cursor-pointer" key={v} onClick={() => setVariant(v)}>
+                  <li style={{ cursor: 'pointer' }} key={v} onClick={() => setVariant(v)}>
                     {v === variant ? <mark>{v}</mark> : v}
                   </li>
                 );
