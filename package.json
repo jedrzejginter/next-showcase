@@ -1,14 +1,11 @@
 {
   "name": "@ginterdev/next-showcase",
-  "version": "0.1.0-rc1",
+  "version": "0.1.0-rc2",
   "license": "MIT",
   "repository": "git@github.com:jedrzejginter/next-showcase.git",
   "author": "Jędrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
   "main": "./lib/index.js",
-  "bin": {
-    "next-showcase": "onchange -i '**/*.stories.*' -- ./cli.js",
-    "ginterdev-next-showcase": "onchange -i '**/*.stories.*' -- ./cli.js"
-  },
+  "bin": "./cli-watch.js",
   "engines": {
     "node": ">=12"
   },
@@ -20,6 +17,7 @@
     "typecheck": "tsc --noEmit"
   },
   "files": [
+    "cli-watch.js",
     "cli.js",
     "lib"
   ],

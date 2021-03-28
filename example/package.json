@@ -5,12 +5,10 @@
   "author": "Jedrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
   "scripts": {
     "dev": "NODE_ENV=development next -p 3000",
-    "dev-showcase": "npx ginterdev-next-showcase"
+    "dev-showcase": "npx @ginterdev/next-showcase"
   },
   "dependencies": {
     "@ginterdev/next-showcase": "file:..",
-    "next": "10.0.9",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "next": "10.0.9"
   }
 }
