@@ -1,7 +1,7 @@
 {
-  "name": "@jg-tools/next-showcase",
+  "name": "@ginterdev/next-showcase",
   "license": "MIT",
-  "version": "0.0.1-beta.0",
+  "version": "0.1.0-rc1",
   "repository": "git@github.com:jedrzejginter/next-showcase.git",
   "author": "Jędrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
   "files": [
@@ -10,24 +10,33 @@
   ],
   "main": "./lib/index.js",
   "bin": {
-    "next-showcase": "./cli.js"
+    "next-showcase": "onchange -i '**/*.stories.*' -- ./cli.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "glob": "^7.1.6"
+    "clsx": "1.1.1",
+    "globby": ">=11.0.3",
+    "hoist-non-react-statics": ">=3.3.2",
+    "html2canvas": "^1.0.0-rc.7",
+    "onchange": "^7.1"
   },
   "devDependencies": {
-    "@types/node": "14.14.5",
-    "@types/react": "16.9.53",
-    "@types/react-dom": "16.9.8",
-    "typescript": "4.0.5"
+    "@types/hoist-non-react-statics": "3.3.1",
+    "@types/node": "14.14.37",
+    "@types/react": "17.0.3",
+    "@types/react-dom": "17.0.3",
+    "next": "10.0.9",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "typescript": "4.2.3"
   },
   "peerDependencies": {
     "next": ">=9.4",
     "react": ">=16.13",
     "react-dom": ">=16.13",
-    "typescript": ">=4"
+    "typescript": ">=3.9"
   }
 }
