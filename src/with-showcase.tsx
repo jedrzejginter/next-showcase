@@ -21,7 +21,7 @@ function WrapperPlaceholder({ children }: PropsWithChildren<{}>) {
 }
 
 /** Check if the `pathname` is showcase's pathname. */
-function isShowcasePathname(pathname: string): boolean {
+export function isShowcasePathname(pathname: string): boolean {
   return /__showcase/.test(pathname);
 }
 

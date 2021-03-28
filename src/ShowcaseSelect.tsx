@@ -1,23 +1,23 @@
-import React from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 /**
  * Implements the simplest shape of ChangeEvent we require to update prop variant.
  * The only thing we need is value.
  */
-export type OnChangeEventLike = {
+type OnChangeEventLike = {
   target: {
     value: string
   }
 }
 
 export type ShowcaseSelectProps<TypeOfValue extends string> = {
-  value: TypeOfValue;
+  onChange: (event: OnChangeEventLike) => void;
   options: TypeOfValue[];
   setValue: (newValue: TypeOfValue) => void;
-  onChange: (event: OnChangeEventLike) => void;
+  value: TypeOfValue;
 };
 
-export function ShowcaseSelect<T extends string>({
+export default function ShowcaseSelect<T extends string>({
   value,
   options,
   label,
@@ -40,3 +40,30 @@ export function ShowcaseSelect<T extends string>({
     </div>
   );
 }
+
+export function useShowcaseSelect<TypeOfValue extends string>(
+  options: TypeOfValue[],
+  defaultValue: TypeOfValue,
+): [TypeOfValue, ShowcaseSelectProps<TypeOfValue>] {
+  const [value, setValue] = useState<TypeOfValue>(defaultValue);
+
+  const onChange = useCallback(
+    (event: OnChangeEventLike) => {
+      setValue(event.target.value as TypeOfValue);
+    },
+    [],
+  );
+
+  const propsForSelect = useMemo(
+    () => ({
+      value,
+      options,
+      onChange,
+      setValue,
+    }),
+    [value, options],
+  );
+
+  return [value, propsForSelect];
+}
+
