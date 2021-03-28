@@ -6,9 +6,9 @@ import React, { useCallback, useMemo, useState } from 'react';
  */
 type OnChangeEventLike = {
   target: {
-    value: string
-  }
-}
+    value: string;
+  };
+};
 
 export type ShowcaseSelectProps<TypeOfValue extends string> = {
   onChange: (event: OnChangeEventLike) => void;
@@ -26,11 +26,7 @@ export default function ShowcaseSelect<T extends string>({
   return (
     <div className="showcase showcase-select-wrapper">
       {label && <label className="showcase-select-label">{label}</label>}
-      <select
-        className="showcase-select"
-        onChange={onChange}
-        value={value}
-      >
+      <select className="showcase-select" onChange={onChange} value={value}>
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
@@ -47,12 +43,9 @@ export function useShowcaseSelect<TypeOfValue extends string>(
 ): [TypeOfValue, ShowcaseSelectProps<TypeOfValue>] {
   const [value, setValue] = useState<TypeOfValue>(defaultValue);
 
-  const onChange = useCallback(
-    (event: OnChangeEventLike) => {
-      setValue(event.target.value as TypeOfValue);
-    },
-    [],
-  );
+  const onChange = useCallback((event: OnChangeEventLike) => {
+    setValue(event.target.value as TypeOfValue);
+  }, []);
 
   const propsForSelect = useMemo(
     () => ({
@@ -61,9 +54,8 @@ export function useShowcaseSelect<TypeOfValue extends string>(
       onChange,
       setValue,
     }),
-    [value, options],
+    [value, onChange, options],
   );
 
   return [value, propsForSelect];
 }
-

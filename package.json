@@ -1,20 +1,33 @@
 {
   "name": "@ginterdev/next-showcase",
-  "license": "MIT",
   "version": "0.1.0-rc1",
+  "license": "MIT",
   "repository": "git@github.com:jedrzejginter/next-showcase.git",
   "author": "Jędrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
+  "main": "./lib/index.js",
+  "bin": {
+    "next-showcase": "onchange -i '**/*.stories.*' -- ./cli.js",
+    "ginterdev-next-showcase": "onchange -i '**/*.stories.*' -- ./cli.js"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "build": "tsc",
+    "eslint": "eslint --ext '.js,.jsx,.ts,.tsx' --ignore-pattern '!.*.js'",
+    "lint": "yarn run eslint .",
+    "start": "NODE_ENV=production next start",
+    "typecheck": "tsc --noEmit"
+  },
   "files": [
     "cli.js",
     "lib"
   ],
-  "main": "./lib/index.js",
-  "bin": {
-    "next-showcase": "onchange -i '**/*.stories.*' -- ./cli.js"
-  },
-  "scripts": {
-    "build": "tsc",
-    "typecheck": "tsc --noEmit"
+  "peerDependencies": {
+    "next": ">=9.4",
+    "react": ">=16.13",
+    "react-dom": ">=16.13",
+    "typescript": ">=3.9"
   },
   "dependencies": {
     "clsx": "1.1.1",
@@ -29,15 +42,24 @@
     "@types/node": "14.14.37",
     "@types/react": "17.0.3",
     "@types/react-dom": "17.0.3",
+    "@typescript-eslint/eslint-plugin": "4.19.0",
+    "@typescript-eslint/parser": "4.19.0",
+    "babel-plugin-module-resolver": "4.1.0",
+    "eslint": "7.23.0",
+    "eslint-config-airbnb-typescript": "12.3.1",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-react": "7.23.1",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "husky": "4.3.8",
+    "lint-staged": "10.5.4",
     "next": "10.0.9",
+    "prettier": "2.2.1",
+    "prettier-plugin-package": "1.3.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "typescript": "4.2.3"
-  },
-  "peerDependencies": {
-    "next": ">=9.4",
-    "react": ">=16.13",
-    "react-dom": ">=16.13",
-    "typescript": ">=3.9"
   }
 }

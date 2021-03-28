@@ -1,6 +1,6 @@
-import Head from 'next/head';
-import html2canvas from 'html2canvas';
 import clsx from 'clsx';
+import html2canvas from 'html2canvas';
+import Head from 'next/head';
 import React, {
   FunctionComponent,
   useCallback,
@@ -48,7 +48,7 @@ type ShowcaseProps = {
    * Map of factory functions returning dynamic imports for each stories module found
    * in the repository tree.
    */
-   moduleLoaders: Record<string, () => Promise<StoriesModule>>;
+  moduleLoaders: Record<string, () => Promise<StoriesModule>>;
 
   /**
    * Timestamp injected every time there is a need to re-render,
@@ -78,7 +78,9 @@ function formatComponentName(n: string): string {
  * Renders additional things in the Showcase toolbar.
  * User can add its own controls, toggles etc.
  */
-export function ShowcaseToolbar({ children }: PropsWithChildren<{}>): ReactPortal|null {
+export function ShowcaseToolbar({
+  children,
+}: PropsWithChildren<{}>): ReactPortal | null {
   if (typeof document === 'undefined') {
     return null;
   }
@@ -89,8 +91,8 @@ export function ShowcaseToolbar({ children }: PropsWithChildren<{}>): ReactPorta
   );
 }
 
-function useStateWithNull<TypeOfValue>(initialState: TypeOfValue|null) {
-  const [value, setValue] = useState<TypeOfValue|null>(initialState);
+function useStateWithNull<TypeOfValue>(initialState: TypeOfValue | null) {
+  const [value, setValue] = useState<TypeOfValue | null>(initialState);
 
   const setNull = useCallback(() => {
     setValue(null);
@@ -110,8 +112,16 @@ function useBoolState(initialState: boolean) {
 }
 
 function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
-  const [currentModule, setCurrentModule, unsetCurrentModule] = useStateWithNull<CurrentStories>(null);
-  const [currentStoryId, setCurrentStoryId, unsetCurrentStoryId] = useStateWithNull<string>(null);
+  const [
+    currentModule,
+    setCurrentModule,
+    unsetCurrentModule,
+  ] = useStateWithNull<CurrentStories>(null);
+  const [
+    currentStoryId,
+    setCurrentStoryId,
+    unsetCurrentStoryId,
+  ] = useStateWithNull<string>(null);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
   const [hasShadowBox, , toggleHasShadowBox] = useBoolState(false);
@@ -149,7 +159,7 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
         stories: defaultExport,
       });
     },
-    [moduleLoaders],
+    [setCurrentModule, setCurrentStoryId, moduleLoaders],
   );
 
   // Add refs for useEffect.
@@ -168,7 +178,6 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
     }
   }, [renderId]);
 
-
   const rawStoryStruct: ShowcaseStoryOrComponent | null =
     currentModule && currentStoryId && currentStoryId in currentModule.stories
       ? currentModule.stories[currentStoryId] ?? null
@@ -178,80 +187,87 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
     rawStoryStruct === null
       ? null
       : typeof rawStoryStruct === 'function'
-      ?  { scene: rawStoryStruct }
+      ? { scene: rawStoryStruct }
       : rawStoryStruct;
 
   const StoryComponent: FunctionComponent<StoryProps> | null =
     storyStruct === null ? null : storyStruct.scene;
 
-    const downloadComponent = useCallback(async () => {
-      if (!currentModule) {
-        return
-      }
-
-      setIsDownloading(true);
-
-      try {
-        const componentDomElement = document.getElementById('showcase-shadow-box');
-
-        if (!componentDomElement) {
-          return;
-        }
-
-        const { toDataURL } = await html2canvas(componentDomElement);
-
-        const uri: string = toDataURL();
-        const zoomPrefix = hasZoomX2 ? '@x2' : '';
-        const {name: displayName} = currentModule;
-
-        const filename = `${displayName}__${currentStoryId}${zoomPrefix}.png`;
-
-        const link = document.createElement('a');
-
-        link.download = filename;
-        link.href = uri;
-
-        // Download file.
-        document.body.appendChild(link);
-        link.click();
-
-        // Clean up the DOM.
-        link.remove();
-      } finally {
-        setIsDownloading(false);
-      }
-
-    }, [currentModule, currentStoryId, hasZoomX2]);
-
-  const handleModuleClick = useCallback((evt: MouseEvent<HTMLButtonElement>) => {
-    const moduleName = evt.currentTarget.name;
-
-    if (!moduleName) {
-      throw new Error('Missing module name on event target');
-    }
-
-    // We don't have any module opened or we have some other one opened.
-    // For both cases we want to load the module. Notice that once module is
-    // requested via network it will be loaded from cache every second and next time
-    // unless it has been updated.
-    if (currentModule === null || currentModule.name !== moduleName) {
-      loadModuleRef.current(moduleName);
+  const downloadComponent = useCallback(async () => {
+    if (!currentModule) {
       return;
     }
 
-    // This is just a toggle, so hide the module.
-    unsetCurrentStoryId()
-  }, [unsetCurrentStoryId]);
+    setIsDownloading(true);
 
-  const handleStoryClick = useCallback((evt: MouseEvent<HTMLButtonElement>) => {
-    const storyId = evt.currentTarget.name;
+    try {
+      const componentDomElement = document.getElementById(
+        'showcase-shadow-box',
+      );
 
-    if (!storyId) {
-      throw new Error('Missing story id on event target');
+      if (!componentDomElement) {
+        return;
+      }
+
+      const { toDataURL } = await html2canvas(componentDomElement);
+
+      const uri: string = toDataURL();
+      const zoomPrefix = hasZoomX2 ? '@x2' : '';
+      const { name: displayName } = currentModule;
+
+      const filename = `${displayName}__${currentStoryId}${zoomPrefix}.png`;
+
+      const link = document.createElement('a');
+
+      link.download = filename;
+      link.href = uri;
+
+      // Download file.
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up the DOM.
+      link.remove();
+    } finally {
+      setIsDownloading(false);
     }
+  }, [currentModule, currentStoryId, hasZoomX2]);
 
-    setCurrentStoryId(storyId)
-  }, []);
+  const handleModuleClick = useCallback(
+    (evt: MouseEvent<HTMLButtonElement>) => {
+      const moduleName = evt.currentTarget.name;
+
+      if (!moduleName) {
+        throw new Error('Missing module name on event target');
+      }
+
+      // We don't have any module opened or we have some other one opened.
+      // For both cases we want to load the module. Notice that once module is
+      // requested via network it will be loaded from cache every second and next time
+      // unless it has been updated.
+      if (currentModule === null || currentModule.name !== moduleName) {
+        loadModuleRef.current(moduleName);
+        return;
+      }
+
+      // This is just a toggle, so hide the module.
+      unsetCurrentStoryId();
+    },
+    [currentModule, unsetCurrentStoryId],
+  );
+
+  const handleStoryClick = useCallback(
+    (evt: MouseEvent<HTMLButtonElement>) => {
+      const storyId = evt.currentTarget.name;
+
+      if (!storyId) {
+        throw new Error('Missing story id on event target');
+      }
+
+      setCurrentStoryId(storyId);
+    },
+    [setCurrentStoryId],
+  );
 
   return (
     <div
@@ -278,7 +294,8 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
               <button
                 type="button"
                 className={clsx(`showcase-item-button`, {
-                  'showcase-item-button__current': moduleLoader.name === currentModule?.name
+                  'showcase-item-button__current':
+                    moduleLoader.name === currentModule?.name,
                 })}
                 name={moduleLoader.name}
                 onClick={handleModuleClick}
@@ -289,22 +306,25 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
                 If this component is currently active, show list of stories for it whenever there
                 are at least two of them..
               */}
-              {currentModule?.name === moduleLoader.name && currentModule?.storiesIds.length > 1 && (
-                <div id="showcase-variants-nav">
-                  {currentModule.storiesIds.map((storyId) => (
-                    <button
-                      className={clsx('showcase-variant-button', {
-                        'showcase-variant-button__current':storyId === currentStoryId
-                      })}
-                      key={storyId}
-                      name={storyId}
-                      onClick={handleStoryClick}
-                    >
-                      {storyId}
-                    </button>
-                  ))}
-                </div>
-              )}
+              {currentModule?.name === moduleLoader.name &&
+                currentModule?.storiesIds.length > 1 && (
+                  <div id="showcase-variants-nav">
+                    {currentModule.storiesIds.map((storyId) => (
+                      <button
+                        className={clsx('showcase-variant-button', {
+                          'showcase-variant-button__current':
+                            storyId === currentStoryId,
+                        })}
+                        key={storyId}
+                        name={storyId}
+                        type="button"
+                        onClick={handleStoryClick}
+                      >
+                        {storyId}
+                      </button>
+                    ))}
+                  </div>
+                )}
             </div>
           ))}
         </div>
@@ -373,9 +393,7 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
           {storyStruct && (
             <div className="showcase" id="showcase-summary">
               {storyStruct.title && (
-                <div id="showcase-summary-title">
-                  {storyStruct.title}
-                </div>
+                <div id="showcase-summary-title">{storyStruct.title}</div>
               )}
               {storyStruct.description && (
                 <div id="showcase-summary-description">
@@ -387,18 +405,23 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
           {/*
             This is where our story is rendered.
           */}
-          <div className='showcase-wrapping-outer-box'>
+          <div className="showcase-wrapping-outer-box">
             {/*
               Direct wrapper of story which adds shadow when this option is active.
             */}
             <div
-              className={clsx({'showcase-bounding-shadow' : hasShadowBox})}
+              className={clsx({ 'showcase-bounding-shadow': hasShadowBox })}
               id="showcase-shadow-box"
             >
-              {StoryComponent
-                ? <StoryComponent hasZoom={hasZoomX2} />
-                : currentModule && <div className="showcase">No such variant: {currentStoryId}</div>
-              }
+              {StoryComponent ? (
+                <StoryComponent hasZoom={hasZoomX2} />
+              ) : (
+                currentModule && (
+                  <div className="showcase">
+                    No such variant: {currentStoryId}
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>

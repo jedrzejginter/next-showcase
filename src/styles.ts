@@ -1,6 +1,6 @@
-import { darkBg, lightBg } from "./svg";
+import { darkBg, lightBg } from './svg';
 
-export const styles = (`
+export const styles = `
   .showcase {
     all:unset;
     box-sizing: border-box;
@@ -224,7 +224,7 @@ export const styles = (`
   // Now, make sure every CSS rule is marked as important.
   // This is a dirty hack, but the only way to make sure
   // that no global stylesheet will overwrite our styles.
-  .replace(/;/g, ' !important;'))
+  .replace(/;/g, ' !important;')
   // Minify the output CSS.
   .replace(/(\n\s{2,})/g, '')
   // Fill selectors placeholders.

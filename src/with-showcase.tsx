@@ -61,10 +61,15 @@ export default function withShowcase(
     );
   }
 
-  const NextAppWithShowcaseHoistedStatics = hoistNonReactStatics(NextAppWithShowcase, App);
+  const NextAppWithShowcaseHoistedStatics = hoistNonReactStatics(
+    NextAppWithShowcase,
+    App,
+  );
 
   if (!skipInitialProps) {
-    NextAppWithShowcaseHoistedStatics.getInitialProps = (appContext: AppContext) => {
+    NextAppWithShowcaseHoistedStatics.getInitialProps = (
+      appContext: AppContext,
+    ) => {
       // Not sure if we should do this, but this place skips whole logic
       // of users custom App. Use case for this might be skipping authentication
       // to access showcase page.
@@ -75,10 +80,10 @@ export default function withShowcase(
       }
 
       // Just do everything as is for non-showcase urls.
-      return App.getInitialProps ?
-        App.getInitialProps(appContext) :
-        // Fallback to basic 'getInitialProps'.
-        NextApp.getInitialProps(appContext);
+      return App.getInitialProps
+        ? App.getInitialProps(appContext)
+        : // Fallback to basic 'getInitialProps'.
+          NextApp.getInitialProps(appContext);
     };
   }
 
