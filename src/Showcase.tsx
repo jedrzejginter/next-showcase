@@ -209,9 +209,13 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
         return;
       }
 
-      const { toDataURL } = await html2canvas(componentDomElement);
+      const uri = (
+        await html2canvas(componentDomElement, {
+          backgroundColor: null,
+          foreignObjectRendering: true,
+        })
+      ).toDataURL();
 
-      const uri: string = toDataURL();
       const zoomPrefix = hasZoomX2 ? '@x2' : '';
       const { name: displayName } = currentModule;
 
