@@ -3,19 +3,16 @@ const { mkdirSync, writeFileSync } = require('fs');
 const globby = require('globby');
 const { dirname } = require('path');
 
-const allStoriesPaths = globby.sync([
-  'src/**/*.stories.(j|t)sx',
-  'src/**/stories.(j|t)sx',
-]);
+const allStoriesPaths = globby.sync(['src/**/*.stories.(j|t)sx']);
 
 const modules = allStoriesPaths.map((storiesPath) => {
   // Get module name.
   // Example: src/components/Button/Button.stories.ts -> components/Button
-  const modName = dirname(storiesPath).replace(/^src/, '');
+  const modName = dirname(storiesPath).replace(/^src\//, '');
 
   // Replace slashed with double underscore.
   // Example: components/Button -> components__Button.
-  const importName = modName.replace('/', '__');
+  const importName = modName.replace(/\//g, '__');
 
   return {
     // This will be used for calculating name and group displayed in

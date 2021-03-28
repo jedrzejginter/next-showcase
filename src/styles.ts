@@ -92,11 +92,11 @@ export const styles = `
   }
 
   <ROOT><HAS-BG> .showcase-wrapping-outer-box {
-    background-image: url(${lightBg});
+    background-image: url(<LIGHT-BACKGROUND>);
   }
 
   <ROOT><HAS-BG><IS-DARK> .showcase-wrapping-outer-box {
-    background-image: url(${darkBg});
+    background-image: url(<DARK-BACKGROUND>);
   }
 
   #showcase-shadow-box {
@@ -105,7 +105,7 @@ export const styles = `
 
   <ROOT><HAS-ZOOM> #showcase-shadow-box {
     transform: scale(2);
-    transformOrigin: left top;
+    transform-origin: left top;
   }
 
   .showcase-bounding-shadow {
@@ -231,4 +231,6 @@ export const styles = `
   .replace(/<ROOT>/g, '#__next-showcase-root')
   .replace(/<HAS-BG>/g, '[data-has-background="true"]')
   .replace(/<HAS-ZOOM>/g, '[data-has-zoom="true"]')
-  .replace(/<IS-DARK>/g, '[data-is-dark="true"]');
+  .replace(/<IS-DARK>/g, '[data-is-dark="true"]')
+  .replace(/<LIGHT-BACKGROUND>/g, lightBg)
+  .replace(/<DARK-BACKGROUND>/g, darkBg);
