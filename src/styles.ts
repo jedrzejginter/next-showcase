@@ -1,6 +1,10 @@
 import { darkBg, lightBg } from './svg';
 
 export const styles = `
+  body {
+    margin: 0;
+  }
+
   .showcase {
     all:unset;
     box-sizing: border-box;
@@ -36,9 +40,16 @@ export const styles = `
   }
 
   .showcase-item-button {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: none;
     border-radius: 2px;
     cursor: pointer;
+    font-size: 16px;
+    font-family: 'Overpass';
     font-weight: 600;
+    line-height: 1.75;
     outline: none;
     padding: 0 10px;
     text-align: left;
@@ -131,8 +142,8 @@ export const styles = `
   }
 
   #showcase-variants-nav {
-    border-bottom: 1px dashed #ccc;
-    border-left: 1px dashed #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
     display: flex;
     flex-direction: column;
     margin: 0 5px;
@@ -140,10 +151,20 @@ export const styles = `
   }
 
   .showcase-variant-button {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: none;
     border-radius: 2px;
     cursor: pointer;
     font-size: 14px;
+    font-family: 'Overpass';
     text-align: left;
+    min-height: 20px;
+  }
+
+  .showcase-variant-button:hover {
+    background-color: #ccc;
   }
 
   .showcase-variant-button + .showcase-variant-button {
@@ -171,6 +192,18 @@ export const styles = `
     position: relative;
   }
 
+  .showcase-checkbox-label {
+    align-items: center;
+    display: inline-flex;
+    flex-wrap: wrap;
+  }
+
+  .showcase-input {
+    height: 16px;
+    margin: 0;
+    width: 16px;
+  }
+
   .showcase-select-label {
     bottom: 100%;
     color: #aaa;
@@ -183,6 +216,7 @@ export const styles = `
   .showcase-select {
     -webkit-appearance: menulist;
     appearance: menulist;
+    background: transparent;
     border: 1px solid #ccc;
     border-radius: 2px;
   }
@@ -190,9 +224,12 @@ export const styles = `
   .showcase-button {
     -webkit-appearance: button;
     appearance: button;
+    background: transparent;
     border: 1px solid #ccc;
     border-radius: 2px;
+    cursor: pointer;
     font-family: inherit;
+    font-size: 16px;
     padding: 0 10px;
   }
 
