@@ -91,6 +91,10 @@ export const styles = `
     padding: 20px;
   }
 
+  <ROOT><IS-DARK> .showcase-wrapping-outer-box {
+    background-color: #000;
+  }
+
   <ROOT><HAS-BG> .showcase-wrapping-outer-box {
     background-image: url(<LIGHT-BACKGROUND>);
   }
@@ -109,8 +113,12 @@ export const styles = `
   }
 
   .showcase-bounding-shadow {
-    box-shadow: 0 0 5px black;
+    box-shadow: 0 0 5px #000;
     line-height: unset;
+  }
+
+  <ROOT><IS-DARK> .showcase-bounding-shadow {
+    box-shadow: 0 0 5px #fff;
   }
 
   .showcase-checkbox-span {
