@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import html2canvas from 'html2canvas';
 import Head from 'next/head';
 import React, {
   FunctionComponent,
@@ -122,7 +121,6 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
     setCurrentStoryId,
     unsetCurrentStoryId,
   ] = useStateWithNull<string>(null);
-  const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
   const [hasShadowBox, , toggleHasShadowBox] = useBoolState(false);
   const [hasBackground, , toggleHasBackground] = useBoolState(true);
@@ -192,45 +190,6 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
 
   const StoryComponent: FunctionComponent<StoryProps> | null =
     storyStruct === null ? null : storyStruct.story;
-
-  const downloadComponent = useCallback(async () => {
-    if (!currentModule) {
-      return;
-    }
-
-    setIsDownloading(true);
-
-    try {
-      const componentDomElement = document.getElementById(
-        'showcase-shadow-box',
-      );
-
-      if (!componentDomElement) {
-        return;
-      }
-
-      const uri = (await html2canvas(componentDomElement)).toDataURL();
-
-      const zoomPrefix = hasZoom ? '@x2' : '';
-      const { name: displayName } = currentModule;
-
-      const filename = `${displayName}__${currentStoryId}${zoomPrefix}.png`;
-
-      const link = document.createElement('a');
-
-      link.download = filename;
-      link.href = uri;
-
-      // Download file.
-      document.body.appendChild(link);
-      link.click();
-
-      // Clean up the DOM.
-      link.remove();
-    } finally {
-      setIsDownloading(false);
-    }
-  }, [currentModule, currentStoryId, hasZoom]);
 
   const handleModuleClick = useCallback(
     (evt: MouseEvent<HTMLButtonElement>) => {
@@ -366,30 +325,13 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
                 <span className="showcase-checkbox-span">x2</span>
               </label>
               {currentModule && (
-                <>
-                  <button
-                    className="showcase-button"
-                    onClick={unsetCurrentModule}
-                    type="button"
-                  >
-                    Close
-                  </button>
-                  <button
-                    className="showcase-button"
-                    // there is some problem with downloading image
-                    // with zoom, so don't allow it now
-                    disabled={isDownloading || hasZoom}
-                    onClick={downloadComponent}
-                    title={
-                      hasZoom
-                        ? 'Download is currently not supported when using zoom.'
-                        : undefined
-                    }
-                    type="button"
-                  >
-                    &#8681; Download
-                  </button>
-                </>
+                <button
+                  className="showcase-button"
+                  onClick={unsetCurrentModule}
+                  type="button"
+                >
+                  Close
+                </button>
               )}
             </div>
             {/*

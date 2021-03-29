@@ -41,7 +41,6 @@
     "clsx": "1.1.1",
     "globby": ">=11.0.3",
     "hoist-non-react-statics": ">=3.3.2",
-    "html2canvas": "^1.0.0-rc.7",
     "onchange": "^7.1"
   },
   "devDependencies": {
