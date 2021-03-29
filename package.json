@@ -1,6 +1,7 @@
 {
   "name": "@ginterdev/next-showcase",
-  "version": "0.1.0-rc.5",
+  "version": "0.1.0-rc.6",
+  "description": "Very simple and basic alternative for Storybook working on Next.js",
   "license": "MIT",
   "repository": "git@github.com:jedrzejginter/next-showcase.git",
   "author": "Jędrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
@@ -13,13 +14,23 @@
     "build": "tsc",
     "eslint": "eslint --ext '.js,.jsx,.ts,.tsx' --ignore-pattern '!.*.js'",
     "lint": "yarn run eslint .",
-    "start": "NODE_ENV=production next start",
     "typecheck": "tsc --noEmit"
   },
   "files": [
     "cli-watch.js",
     "cli.js",
     "lib"
+  ],
+  "keywords": [
+    "ginterdev",
+    "next-showcase",
+    "nextjs ui kit",
+    "react ui kit",
+    "react",
+    "showcase",
+    "storybook",
+    "storybook alternative",
+    "storybook nextjs"
   ],
   "peerDependencies": {
     "next": ">=9.4",
