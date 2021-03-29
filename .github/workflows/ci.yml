@@ -2,16 +2,17 @@ name: main
 on:
   push:
     branches: ['main']
-  pull-request:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches: ['**']
 
 jobs:
   lint-and-test:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node: ['12', '14.14.0']
-    name: lint-and-test (Node ${{ matrix.node }})
     steps:
       - name: Cancel outdated workflows
         uses: styfle/cancel-workflow-action@0.8.0
