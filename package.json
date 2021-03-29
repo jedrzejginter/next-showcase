@@ -12,8 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "eslint": "eslint --ext '.js,.jsx,.ts,.tsx' --ignore-pattern '!.*.js'",
-    "lint": "yarn run eslint .",
+    "lint": "eslint --ext '.js,.jsx,.ts,.tsx' --ignore-pattern '!.*.js'",
     "typecheck": "tsc --noEmit"
   },
   "files": [
