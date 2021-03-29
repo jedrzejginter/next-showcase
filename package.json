@@ -1,6 +1,6 @@
 {
   "name": "@ginterdev/next-showcase",
-  "version": "0.1.0-rc.7",
+  "version": "0.1.0-rc.8",
   "description": "Very simple and basic alternative for Storybook working on Next.js",
   "license": "MIT",
   "repository": "git@github.com:jedrzejginter/next-showcase.git",
