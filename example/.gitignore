@@ -1,2 +1,1 @@
-pages
-*.lock
+pages/__showcase.tsx

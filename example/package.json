@@ -1,21 +1,14 @@
 {
-  "name": "@jg-tools/next-showcase-example",
+  "name": "@ginter-dev/next-showcase-example",
   "version": "0.0.0",
-  "private": true,
+  "license": "UNLICENSED",
+  "author": "Jedrzej Ginter <dzeejj@gmail.com> (https://github.com/jedrzejginter)",
   "scripts": {
-    "dev": "next",
-    "showcase": "next-showcase",
-    "showcase:watch": "onchange -v 'src/**/*.stories.*' -- next-showcase"
+    "dev": "NODE_ENV=development next -p 3000",
+    "dev-showcase": "npx @ginterdev/next-showcase"
   },
   "dependencies": {
-    "@jg-tools/next-showcase": "file:..",
-    "next": "9.5.5",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "typescript": "4.0.5"
-  },
-  "devDependencies": {
-    "@types/node": "14.14.5",
-    "onchange": "7.1.0"
+    "@ginterdev/next-showcase": "file:..",
+    "next": "10.0.9"
   }
 }
