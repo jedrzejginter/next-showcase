@@ -9,7 +9,7 @@ module.exports = {
     ...eslintConfig.rules,
     'import/no-extraneous-dependencies': [
       'error',
-      { devDependencies: ['**/.*rc.js', 'example/**/*'] },
+      { devDependencies: ['**/.*rc.js'] },
     ],
   },
 };

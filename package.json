@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "eslint --ext '.js,.jsx,.ts,.tsx' --ignore-pattern '!.*.js'",
+    "lint": "eslint --ext '.js,.jsx,.ts,.tsx'",
     "typecheck": "tsc --noEmit"
   },
   "files": [
