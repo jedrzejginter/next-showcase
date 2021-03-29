@@ -22,13 +22,14 @@ function WrapperPlaceholder({ children }: PropsWithChildren<{}>) {
 
 /** Check if the `pathname` is showcase's pathname. */
 export function isShowcasePathname(pathname: string): boolean {
-  return /__showcase/.test(pathname);
+  return /_next-showcase/.test(pathname);
 }
 
 /**
  * Wrap custom App with a simple hoc that won't render specifics
  * for user app layout, for example navigation, footer when visiting
- * '/__showcase'. Ideally the only thing that renders is Showcase component.
+ * '/_next-showcase'. Ideally the only thing that renders is
+ * Showcase component.
  */
 export default function withShowcase(
   App: WithShowcaseAppShape,

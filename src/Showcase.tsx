@@ -24,9 +24,9 @@ type StoryProps = {
 
 export type ShowcaseStory = {
   dark?: boolean;
-  title?: string;
+  title?: string | ReactElement;
   description?: string | ReactElement;
-  scene: FunctionComponent<StoryProps>;
+  story: FunctionComponent<StoryProps>;
 };
 
 type ShowcaseStoryOrComponent = ShowcaseStory | FunctionComponent<StoryProps>;
@@ -126,7 +126,7 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
 
   const [hasShadowBox, , toggleHasShadowBox] = useBoolState(false);
   const [hasBackground, , toggleHasBackground] = useBoolState(true);
-  const [hasZoomX2, , toggleHasZoomX2] = useBoolState(false);
+  const [hasZoom, , toggleHasZoom] = useBoolState(false);
 
   const loadModule = useCallback(
     async (moduleName: string) => {
@@ -187,11 +187,11 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
     rawStoryStruct === null
       ? null
       : typeof rawStoryStruct === 'function'
-      ? { scene: rawStoryStruct }
+      ? { story: rawStoryStruct }
       : rawStoryStruct;
 
   const StoryComponent: FunctionComponent<StoryProps> | null =
-    storyStruct === null ? null : storyStruct.scene;
+    storyStruct === null ? null : storyStruct.story;
 
   const downloadComponent = useCallback(async () => {
     if (!currentModule) {
@@ -211,7 +211,7 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
 
       const uri = (await html2canvas(componentDomElement)).toDataURL();
 
-      const zoomPrefix = hasZoomX2 ? '@x2' : '';
+      const zoomPrefix = hasZoom ? '@x2' : '';
       const { name: displayName } = currentModule;
 
       const filename = `${displayName}__${currentStoryId}${zoomPrefix}.png`;
@@ -230,7 +230,7 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
     } finally {
       setIsDownloading(false);
     }
-  }, [currentModule, currentStoryId, hasZoomX2]);
+  }, [currentModule, currentStoryId, hasZoom]);
 
   const handleModuleClick = useCallback(
     (evt: MouseEvent<HTMLButtonElement>) => {
@@ -250,9 +250,10 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
       }
 
       // This is just a toggle, so hide the module.
+      unsetCurrentModule();
       unsetCurrentStoryId();
     },
-    [currentModule, unsetCurrentStoryId],
+    [currentModule, unsetCurrentModule, unsetCurrentStoryId],
   );
 
   const handleStoryClick = useCallback(
@@ -272,7 +273,7 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
     <div
       id="__next-showcase-root"
       data-has-background={String(hasBackground)}
-      data-has-zoom={String(hasZoomX2)}
+      data-has-zoom={String(hasZoom)}
       data-is-dark={String(storyStruct ? storyStruct.dark : false)}
     >
       <Head>
@@ -339,6 +340,7 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
               <label className="showcase-checkbox-label">
                 <input
                   checked={hasShadowBox}
+                  className="showcase-input"
                   disabled={!currentModule}
                   onChange={toggleHasShadowBox}
                   type="checkbox"
@@ -348,15 +350,17 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
               <label className="showcase-checkbox-label">
                 <input
                   type="checkbox"
+                  className="showcase-input"
                   checked={hasBackground}
                   onChange={toggleHasBackground}
                 />
-                <span className="showcase-checkbox-span"> Background</span>
+                <span className="showcase-checkbox-span"> Squares Bg</span>
               </label>
               <label className="showcase-checkbox-label">
                 <input
-                  checked={hasZoomX2}
-                  onChange={toggleHasZoomX2}
+                  checked={hasZoom}
+                  className="showcase-input"
+                  onChange={toggleHasZoom}
                   type="checkbox"
                 />
                 <span className="showcase-checkbox-span">x2</span>
@@ -372,8 +376,15 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
                   </button>
                   <button
                     className="showcase-button"
-                    disabled={isDownloading}
+                    // there is some problem with downloading image
+                    // with zoom, so don't allow it now
+                    disabled={isDownloading || hasZoom}
                     onClick={downloadComponent}
+                    title={
+                      hasZoom
+                        ? 'Download is currently not supported when using zoom.'
+                        : undefined
+                    }
                     type="button"
                   >
                     &#8681; Download
@@ -413,11 +424,11 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
               id="showcase-shadow-box"
             >
               {StoryComponent ? (
-                <StoryComponent hasZoom={hasZoomX2} />
+                <StoryComponent hasZoom={hasZoom} />
               ) : (
                 currentModule && (
                   <div className="showcase">
-                    No such variant: {currentStoryId}
+                    No such variant: {String(currentStoryId)}
                   </div>
                 )
               )}

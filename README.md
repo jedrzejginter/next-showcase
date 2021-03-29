@@ -29,8 +29,8 @@ npm i -D @ginterdev/next-showcase
 next dev -p 3000
 
 # Create 'next-showcase' UI and watch for all stories changes
-# Visit: localhost:3000/__showcase
+# Visit: localhost:3000/_next-showcase
 npx @ginterdev/next-showcase
 ```
 
-_Make sure to add `pages/__showcase.tsx` to your `.gitignore`._
+_Make sure to add `pages/_next-showcase` to your `.gitignore`._
