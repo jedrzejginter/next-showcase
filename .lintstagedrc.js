@@ -1,1 +1,1 @@
-module.exports = require('@ginterdev/toolkit/lintstaged-base');
+module.exports = require('@ginterdev/toolkit/lintstaged');

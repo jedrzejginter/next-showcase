@@ -86,10 +86,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@ginterdev/toolkit@0.1.0-rc.11":
-  version "0.1.0-rc.11"
-  resolved "https://registry.yarnpkg.com/@ginterdev/toolkit/-/toolkit-0.1.0-rc.11.tgz#6624bcc9e55d53ede8d00a9d1735fc8511a41b63"
-  integrity sha512-46Y/0FDXJ1ico6tbVLy+xkPVxZfg9aCy0T5MYJm1TQYOKacavY9tOql2i/rcw9qsGRN4srNzSaP+7TH/PjfFLg==
+"@ginterdev/toolkit@0.1.0-rc.12":
+  version "0.1.0-rc.12"
+  resolved "https://registry.yarnpkg.com/@ginterdev/toolkit/-/toolkit-0.1.0-rc.12.tgz#3d1ca9f203f13ea941a6ed0c34a9625bd890594d"
+  integrity sha512-qPQr6yT0Njxedyic0ue5mnmg/qWtilf+JB8Q+6tHS/0pVQ7BEv9oNDtJLSGamMPkgvwnK9tpISffBlS+BcCt0A==
   dependencies:
     copyfiles "^2.4"
     execa "^5.0"
