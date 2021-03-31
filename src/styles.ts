@@ -211,8 +211,8 @@ export const styles = `
   }
 
   .showcase-select-label {
-    bottom: 100%;
-    color: #aaa;
+    bottom: calc(100% - 1px);
+    color: #888;
     font-size: 9px;
     left: 0;
     line-height: 9px;
@@ -223,8 +223,14 @@ export const styles = `
     -webkit-appearance: menulist;
     appearance: menulist;
     background: transparent;
-    border: 1px solid #ccc;
     border-radius: 2px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: 16px;
+    min-height: 28px;
+    padding: 0 10px;
   }
 
   .showcase-button {
@@ -234,8 +240,10 @@ export const styles = `
     border: 1px solid #ccc;
     border-radius: 2px;
     cursor: pointer;
+    display: inline-flex;
     font-family: inherit;
     font-size: 16px;
+    min-height: 28px;
     padding: 0 10px;
   }
 
