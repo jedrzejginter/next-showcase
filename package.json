@@ -12,6 +12,8 @@
   },
   "scripts": {
     "build": "tsc",
+    "dev": "NO_NPM=true ./bin.js",
+    "dev:next": "next dev -p 3000",
     "lint": "eslint --ext '.js,.jsx,.ts,.tsx'",
     "typecheck": "tsc --noEmit"
   },

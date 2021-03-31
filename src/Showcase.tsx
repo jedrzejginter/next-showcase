@@ -11,6 +11,7 @@ import React, {
   ReactElement,
   ReactPortal,
   MouseEvent,
+  useMemo,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -39,15 +40,23 @@ type StoriesModule = {
   default: ShowcaseStories;
 };
 
+type StoriesModuleDescriptor = {
+  group: string;
+  name: string;
+  source: string;
+  loader: () => Promise<StoriesModule>;
+};
+
+type StoriesModulesGrouped = {
+  group: string;
+  modulesInGroup: StoriesModuleDescriptor[];
+};
+
 /**
  * Props for Showcase page component.
  */
 type ShowcaseProps = {
-  /**
-   * Map of factory functions returning dynamic imports for each stories module found
-   * in the repository tree.
-   */
-  moduleLoaders: Record<string, () => Promise<StoriesModule>>;
+  storiesModules: Record<string, StoriesModuleDescriptor>;
 
   /**
    * Timestamp injected every time there is a need to re-render,
@@ -57,7 +66,7 @@ type ShowcaseProps = {
 };
 
 type CurrentStories = {
-  name: string;
+  source: string;
   stories: ShowcaseStories;
   storiesIds: string[];
 };
@@ -71,6 +80,22 @@ function formatComponentName(n: string): string {
 
   // Capitalize first letter.
   return `${m[0]?.toUpperCase()}${m.slice(1)}`;
+}
+
+function getGroupOrderFactor(groupName: string): number {
+  if (/\/icons\//.test(groupName)) {
+    return 0;
+  }
+
+  if (/\/assets\//.test(groupName)) {
+    return 1;
+  }
+
+  if (/\/components\//.test(groupName)) {
+    return 2;
+  }
+
+  return 9999;
 }
 
 /**
@@ -110,7 +135,7 @@ function useBoolState(initialState: boolean) {
   return [value, setValue, toggle] as const;
 }
 
-function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
+function Showcase({ renderId, storiesModules }: ShowcaseProps) {
   const [
     currentModule,
     setCurrentModule,
@@ -122,21 +147,21 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
     unsetCurrentStoryId,
   ] = useStateWithNull<string>(null);
 
-  const [hasShadowBox, , toggleHasShadowBox] = useBoolState(false);
   const [hasBackground, , toggleHasBackground] = useBoolState(true);
   const [hasZoom, , toggleHasZoom] = useBoolState(false);
 
   const loadModule = useCallback(
     async (moduleName: string) => {
-      // Load stories ES module.
-      const storiesModule = await moduleLoaders[moduleName]?.();
+      const storiesModule = storiesModules[moduleName];
 
       if (!storiesModule) {
         return;
       }
 
-      const { default: defaultExport } = storiesModule;
-      const storiesIds = Object.keys(defaultExport).sort();
+      // Load stories ES module.
+      const { loader, source } = storiesModule;
+      const { default: defaultExport } = await loader();
+      const storiesIds = Object.keys(defaultExport);
 
       // Havin 'default' story is just some convention,
       // but it's not guaranteed to have it, since user decides
@@ -153,11 +178,11 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
       // Finally render stories of selected module.
       setCurrentModule({
         storiesIds,
-        name: moduleName,
+        source,
         stories: defaultExport,
       });
     },
-    [setCurrentModule, setCurrentStoryId, moduleLoaders],
+    [setCurrentModule, setCurrentStoryId, storiesModules],
   );
 
   // Add refs for useEffect.
@@ -172,7 +197,7 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
     // we manually re-load current module.
     // It's crucial that hook dependecy array contains only 'renderId'.
     if (currentModuleRef.current && renderId) {
-      loadModuleRef.current(currentModuleRef.current.name);
+      loadModuleRef.current(currentModuleRef.current.source);
     }
   }, [renderId]);
 
@@ -193,18 +218,18 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
 
   const handleModuleClick = useCallback(
     (evt: MouseEvent<HTMLButtonElement>) => {
-      const moduleName = evt.currentTarget.name;
+      const moduleSourcePath = evt.currentTarget.name;
 
-      if (!moduleName) {
-        throw new Error('Missing module name on event target');
+      if (!moduleSourcePath) {
+        throw new Error('Missing module source on event target');
       }
 
       // We don't have any module opened or we have some other one opened.
       // For both cases we want to load the module. Notice that once module is
       // requested via network it will be loaded from cache every second and next time
       // unless it has been updated.
-      if (currentModule === null || currentModule.name !== moduleName) {
-        loadModuleRef.current(moduleName);
+      if (currentModule === null || currentModule.source !== moduleSourcePath) {
+        loadModuleRef.current(moduleSourcePath);
         return;
       }
 
@@ -228,6 +253,27 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
     [setCurrentStoryId],
   );
 
+  const groupedModules: StoriesModulesGrouped[] = useMemo(() => {
+    const grouped: Record<string, StoriesModuleDescriptor[]> = {};
+
+    Object.entries(storiesModules).forEach(([, storiesModule]) => {
+      if (!(storiesModule.group in grouped)) {
+        grouped[storiesModule.group] = [];
+      }
+
+      grouped[storiesModule.group]?.push(storiesModule);
+    });
+
+    return Object.entries(grouped)
+      .map(([group, modulesInGroup]) => ({ group, modulesInGroup }))
+      .sort((a, b) => {
+        const groupOrderFactorA = getGroupOrderFactor(a.group);
+        const groupOrderFactorB = getGroupOrderFactor(b.group);
+
+        return groupOrderFactorA >= groupOrderFactorB ? -1 : 1;
+      });
+  }, [storiesModules]);
+
   return (
     <div
       id="__next-showcase-root"
@@ -248,42 +294,47 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
           Start of the sidebar with list of all components.
         */}
         <div className="showcase" id="showcase-nav">
-          {Object.values(moduleLoaders).map((moduleLoader) => (
-            <div className="showcase-navitem" key={moduleLoader.name}>
-              <button
-                type="button"
-                className={clsx(`showcase-item-button`, {
-                  'showcase-item-button__current':
-                    moduleLoader.name === currentModule?.name,
-                })}
-                name={moduleLoader.name}
-                onClick={handleModuleClick}
-              >
-                {formatComponentName(moduleLoader.name)}
-              </button>
-              {/*
-                If this component is currently active, show list of stories for it whenever there
-                are at least two of them..
-              */}
-              {currentModule?.name === moduleLoader.name &&
-                currentModule?.storiesIds.length > 1 && (
-                  <div id="showcase-variants-nav">
-                    {currentModule.storiesIds.map((storyId) => (
-                      <button
-                        className={clsx('showcase-variant-button', {
-                          'showcase-variant-button__current':
-                            storyId === currentStoryId,
-                        })}
-                        key={storyId}
-                        name={storyId}
-                        type="button"
-                        onClick={handleStoryClick}
-                      >
-                        {storyId}
-                      </button>
-                    ))}
-                  </div>
-                )}
+          {groupedModules.map(({ group, modulesInGroup }) => (
+            <div className="showcase-group" key={group}>
+              <div className="showcase showcase-group-name">
+                {group.toUpperCase()}
+              </div>
+              {modulesInGroup.map((moduleFromGroup) => (
+                <div className="showcase-navitem" key={moduleFromGroup.source}>
+                  <button
+                    type="button"
+                    className={clsx(`showcase-item-button`, {
+                      'showcase-item-button__current':
+                        moduleFromGroup.source === currentModule?.source,
+                    })}
+                    name={moduleFromGroup.source}
+                    onClick={handleModuleClick}
+                  >
+                    {formatComponentName(moduleFromGroup.name)}
+                  </button>
+                  {/*
+                  If this component is currently active, show list of its stories.
+                */}
+                  {currentModule?.source === moduleFromGroup.source && (
+                    <div id="showcase-variants-nav">
+                      {currentModule.storiesIds.map((storyId) => (
+                        <button
+                          className={clsx('showcase-variant-button', {
+                            'showcase-variant-button__current':
+                              storyId === currentStoryId,
+                          })}
+                          key={storyId}
+                          name={storyId}
+                          type="button"
+                          onClick={handleStoryClick}
+                        >
+                          {storyId}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -296,16 +347,6 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
               Toolbar.
             */}
             <div className="showcase-toolbar-box" id="showcase-options-nav">
-              <label className="showcase-checkbox-label">
-                <input
-                  checked={hasShadowBox}
-                  className="showcase-input"
-                  disabled={!currentModule}
-                  onChange={toggleHasShadowBox}
-                  type="checkbox"
-                />
-                <span className="showcase-checkbox-span">Shadow Box</span>
-              </label>
               <label className="showcase-checkbox-label">
                 <input
                   type="checkbox"
@@ -359,20 +400,19 @@ function Showcase({ renderId, moduleLoaders }: ShowcaseProps) {
           */}
           <div className="showcase-wrapping-outer-box">
             {/*
-              Direct wrapper of story which adds shadow when this option is active.
+              Direct wrapper of story (provides zoom mostly).
             */}
-            <div
-              className={clsx({ 'showcase-bounding-shadow': hasShadowBox })}
-              id="showcase-shadow-box"
-            >
+            <div id="showcase-component-box">
               {StoryComponent ? (
                 <StoryComponent hasZoom={hasZoom} />
+              ) : currentModule ? (
+                <div className="showcase">
+                  No such variant: {String(currentStoryId)}
+                </div>
               ) : (
-                currentModule && (
-                  <div className="showcase">
-                    No such variant: {String(currentStoryId)}
-                  </div>
-                )
+                <div className="showcase" id="showcase-nothing-selected">
+                  Nothing is selected.
+                </div>
               )}
             </div>
           </div>

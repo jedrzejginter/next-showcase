@@ -1,6 +1,5 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import NextApp, { AppProps, AppContext, AppInitialProps } from 'next/app';
-import { useRouter } from 'next/router';
 import React, { ComponentType, PropsWithChildren } from 'react';
 
 type WithShowcaseOptions = {
@@ -21,8 +20,8 @@ function WrapperPlaceholder({ children }: PropsWithChildren<{}>) {
 }
 
 /** Check if the `pathname` is showcase's pathname. */
-export function isShowcasePathname(pathname: string): boolean {
-  return /_next-showcase/.test(pathname);
+export function isShowcaseComponent(something: unknown): boolean {
+  return Object.prototype.hasOwnProperty.call(something, 'IS_SHOWCASE_PAGE');
 }
 
 /**
@@ -39,14 +38,12 @@ export default function withShowcase(
   const skipInitialProps = options.skipInitialProps ?? false;
 
   function NextAppWithShowcase({ Component, pageProps, ...props }: AppProps) {
-    const { pathname } = useRouter();
-
     // Don't render anything specific for user's project.
     // User can still customize rendering via Wrapper, for example
     // add some global contexts when needed.
     // This can be useful for notification system, when global context is
     // used and UI components are coupled to it.
-    if (isShowcasePathname(pathname)) {
+    if (Object.prototype.hasOwnProperty.call(Component, 'IS_SHOWCASE_PAGE')) {
       return (
         <Wrapper isShowcasePage>
           <Component {...pageProps} />
@@ -76,7 +73,7 @@ export default function withShowcase(
       // to access showcase page.
       // I don't expect to break something here. If it does break, user can always
       // set `skipInitialProps = false`.
-      if (isShowcasePathname(appContext.router.pathname)) {
+      if (isShowcaseComponent(appContext.Component)) {
         return NextApp.getInitialProps(appContext);
       }
 

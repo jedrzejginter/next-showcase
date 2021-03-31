@@ -2,6 +2,8 @@ import { darkBg, lightBg } from './svg';
 
 export const styles = `
   body {
+    all: unset;
+    background-color: unset;
     margin: 0;
   }
 
@@ -30,13 +32,24 @@ export const styles = `
     width: 300px;
   }
 
+  .showcase-group:not(:first-child) {
+    margin-top: 10px;
+  }
+
+  .showcase-group-name {
+    color: grey;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
   .showcase-navitem {
     cursor: pointer;
     width: 100%;
   }
 
   .showcase-navitem + .showcase-navitem {
-    margin-top: 10px;
+    margin-top: 5px;
   }
 
   .showcase-item-button {
@@ -92,8 +105,11 @@ export const styles = `
 
   .showcase-wrapping-outer-box {
     background-size: 20px;
+    box-sizing: border-box;
+    display: block;
     line-height: unset;
     min-height: calc(100vh - 50px);
+    overflow: auto;
     padding: 10px;
   }
 
@@ -114,22 +130,13 @@ export const styles = `
     background-image: url(<DARK-BACKGROUND>);
   }
 
-  #showcase-shadow-box {
-    display: inline-block;
+  #showcase-component-box {
+    display: block;
   }
 
-  <ROOT><HAS-ZOOM> #showcase-shadow-box {
+  <ROOT><HAS-ZOOM> #showcase-component-box {
     transform: scale(2);
     transform-origin: left top;
-  }
-
-  .showcase-bounding-shadow {
-    box-shadow: 0 0 5px #000;
-    line-height: unset;
-  }
-
-  <ROOT><IS-DARK> .showcase-bounding-shadow {
-    box-shadow: 0 0 5px #fff;
   }
 
   .showcase-checkbox-span {
@@ -142,12 +149,11 @@ export const styles = `
   }
 
   #showcase-variants-nav {
-    border-bottom: 1px solid #ccc;
     border-left: 1px solid #ccc;
     display: flex;
     flex-direction: column;
-    margin: 0 5px;
-    padding: 2px;
+    margin: 2px 0 0 5px;
+    padding-left: 4px;
   }
 
   .showcase-variant-button {
@@ -264,6 +270,11 @@ export const styles = `
   #showcase-summary-description {
     font-family: 'Overpass';
     font-size: 20px;
+  }
+
+  #showcase-nothing-selected {
+    color: grey;
+    font-style: italic;
   }
 `
   // Now, make sure every CSS rule is marked as important.
