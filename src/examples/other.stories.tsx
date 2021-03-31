@@ -2,8 +2,8 @@ import { ShowcaseStories } from '..';
 
 const stories: ShowcaseStories = {
   Colors: {
-    dark: false,
-    story: () => <strong>Other stuff</strong>,
+    dark: true,
+    story: () => <strong style={{ color: '#fff' }}>Stuff in #fff</strong>,
   },
 };
 
