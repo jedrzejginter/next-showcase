@@ -3,3 +3,6 @@ lib
 dist
 .next
 !.*.js
+
+pages/_next-showcase
+src/examples
