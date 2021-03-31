@@ -1,6 +1,6 @@
 {
   "name": "@ginterdev/next-showcase",
-  "version": "0.1.0-rc.10",
+  "version": "0.1.0-rc.11",
   "description": "Very simple and basic alternative for Storybook working on Next.js",
   "license": "MIT",
   "repository": "git@github.com:jedrzejginter/next-showcase.git",
@@ -11,7 +11,7 @@
     "node": ">=12"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --jsx react",
     "dev": "NO_NPM=true ./bin.js",
     "dev:next": "next dev -p 3000",
     "lint": "eslint --ext '.js,.jsx,.ts,.tsx'",
