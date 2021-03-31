@@ -30,7 +30,7 @@ const modules = allStoriesPaths.map((storiesPath) => {
   const modName = lastChunk.replace(/\.stories\.[jt]sx/, '');
 
   // Try to obtain group based on path, very opinionated.
-  const group = getGroupNameFromPath(pathNoSource);
+  const group = getGroupNameFromPath(storiesPath);
 
   // Replace slashed with double underscore.
   // Example: components/Button -> components__Button.
