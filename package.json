@@ -20,7 +20,8 @@
   "files": [
     "bin.js",
     "cli.js",
-    "lib"
+    "lib",
+    "screenshot.png"
   ],
   "keywords": [
     "ginterdev",

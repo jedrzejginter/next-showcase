@@ -2,6 +2,8 @@
 
 > Very simple and basic alternative for Storybook working on Next.js.
 
+![Next Showcase Screenshot](./screenshot.png)
+
 ## Warning :warning:
 
 1. **This tool is completely Next.js-based, so it cannot be used without it (for now).** It has potential for working with non-Next.js apps, though.
