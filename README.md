@@ -2,6 +2,8 @@
 
 > Very simple and basic alternative for Storybook working on Next.js.
 
+![Next Showcase Screenshot](./screenshot.png)
+
 ## Warning :warning:
 
 1. **This tool is completely Next.js-based, so it cannot be used without it (for now).** It has potential for working with non-Next.js apps, though.
@@ -36,7 +38,7 @@ next dev -p 3000
 
 ### Step 2 (optional)
 
-:warning: This has be done ONLY if you have [custom `App` component](https://nextjs.org/docs/advanced-features/custom-app).
+:warning: This has to be done ONLY if you have [custom `App` component](https://nextjs.org/docs/advanced-features/custom-app).
 
 Wrap you custom `App` component with `withShowcase`. This will skip all specific stuff for your project implemented inside `getInitialProps` as well and your custom component. You don't want to render header or footer as part of showcase page.
 
@@ -44,7 +46,8 @@ Wrap you custom `App` component with `withShowcase`. This will skip all specific
 import { withShowcase } from '@ginterdev/next-showcase';
 
 function App() {
-  // Render some stuff, probably some custom global layout.
+  // Implementation ommitted.
+  return ...;
 }
 
 export default withShowcase(App);
@@ -83,4 +86,4 @@ npx @ginterdev/next-showcase
 
 ---
 
-_Make sure to add `pages/_next-showcase` to your `.gitignore`._
+Make sure to add `pages/_next-showcase` to your `.gitignore`.
