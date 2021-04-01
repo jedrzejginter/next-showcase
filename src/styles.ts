@@ -167,6 +167,7 @@ export const styles = `
     font-family: 'Overpass';
     text-align: left;
     min-height: 20px;
+    word-break: break-all;
   }
 
   .showcase-variant-button:hover {

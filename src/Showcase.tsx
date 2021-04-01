@@ -83,16 +83,40 @@ function formatComponentName(n: string): string {
 }
 
 function getGroupOrderFactor(groupName: string): number {
-  if (/\/icons\//.test(groupName)) {
+  if (/icons/i.test(groupName)) {
     return 0;
   }
 
-  if (/\/assets\//.test(groupName)) {
+  if (/assets/i.test(groupName)) {
     return 1;
   }
 
-  if (/\/components\//.test(groupName)) {
+  if (/atoms/i.test(groupName)) {
+    return 3;
+  }
+
+  if (/molecules/i.test(groupName)) {
+    return 4;
+  }
+
+  if (/organisms/i.test(groupName)) {
+    return 5;
+  }
+
+  if (/templates/i.test(groupName)) {
+    return 6;
+  }
+
+  if (/components/i.test(groupName)) {
     return 2;
+  }
+
+  if (/views/i.test(groupName)) {
+    return 7;
+  }
+
+  if (/pages/i.test(groupName)) {
+    return 8;
   }
 
   return 9999;
@@ -270,7 +294,7 @@ function Showcase({ renderId, storiesModules }: ShowcaseProps) {
         const groupOrderFactorA = getGroupOrderFactor(a.group);
         const groupOrderFactorB = getGroupOrderFactor(b.group);
 
-        return groupOrderFactorA >= groupOrderFactorB ? -1 : 1;
+        return groupOrderFactorB >= groupOrderFactorA ? -1 : 1;
       });
   }, [storiesModules]);
 
