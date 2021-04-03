@@ -32,6 +32,12 @@ export const styles = `
     width: 300px;
   }
 
+  #showcase-nav-header {
+    margin-bottom: 20px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
   .showcase-group:not(:first-child) {
     margin-top: 10px;
   }

@@ -5,7 +5,7 @@ export default {
   Primary: () => <button type="button">Primary</button>,
 
   'With Variants': {
-    story: () => {
+    Story: () => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const [variant, selectProps] = useShowcaseSelect(
         ['Primary', 'Secondary', 'Other'],

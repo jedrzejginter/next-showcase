@@ -22,6 +22,10 @@ function getGroupNameFromPath(storiesPath) {
     return 'Components (Templates)';
   }
 
+  if (/\/forms\//i.test(storiesPath)) {
+    return 'Forms';
+  }
+
   if (/\/pages\//i.test(storiesPath)) {
     return 'Pages';
   }
@@ -86,7 +90,7 @@ const file = `
 /* eslint-disable */
 import Showcase from '${importPath}';
 
-export default function ShowcasePage() {
+export default function ShowcasePage({ SidebarHeader }) {
   const storiesModules = {
   ${modules
     .map(
@@ -103,12 +107,13 @@ export default function ShowcasePage() {
   return (
     <Showcase
       renderId={${Date.now()}}
+      SidebarHeader={SidebarHeader}
       storiesModules={storiesModules}
     />
   );
 }
 
-ShowcasePage.IS_SHOWCASE_PAGE = true;
+ShowcasePage.IS_SHOWCASE_COMPONENT = true;
 /* eslint-enable */
 /* prettier-ignore-end */
 `;
