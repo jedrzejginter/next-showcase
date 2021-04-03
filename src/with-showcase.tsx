@@ -1,5 +1,9 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import NextApp, { AppProps, AppContext, AppInitialProps } from 'next/app';
+import NextApp, {
+  AppProps as NextAppProps,
+  AppContext,
+  AppInitialProps,
+} from 'next/app';
 import React, { ComponentType, PropsWithChildren } from 'react';
 
 type WithShowcaseOptions = {
@@ -8,7 +12,9 @@ type WithShowcaseOptions = {
   skipInitialProps?: boolean;
 };
 
-type WithShowcaseAppShape = ComponentType<AppProps> & {
+type WithShowcaseAppShape<
+  AppProps extends NextAppProps
+> = ComponentType<AppProps> & {
   getInitialProps?: (appContext: AppContext) => Promise<AppInitialProps>;
 };
 
@@ -30,14 +36,16 @@ export function isShowcaseComponent(something: unknown): boolean {
  * '/_next-showcase'. Ideally the only thing that renders is
  * Showcase component.
  */
-export default function withShowcase(
-  App: WithShowcaseAppShape,
+export default function withShowcase<AppProps extends NextAppProps>(
+  App: WithShowcaseAppShape<AppProps>,
   options: WithShowcaseOptions = {},
 ) {
   const Wrapper = options.Wrapper ?? WrapperPlaceholder;
   const skipInitialProps = options.skipInitialProps ?? false;
 
-  function NextAppWithShowcase({ Component, pageProps, ...props }: AppProps) {
+  function NextAppWithShowcase(props: AppProps) {
+    const { Component, pageProps } = props;
+
     // Don't render anything specific for user's project.
     // User can still customize rendering via Wrapper, for example
     // add some global contexts when needed.
@@ -54,7 +62,7 @@ export default function withShowcase(
     // Render everything as there was no Showcase used.
     return (
       <Wrapper isShowcasePage={false}>
-        <App Component={Component} pageProps={pageProps} {...props} />
+        <App {...props} />
       </Wrapper>
     );
   }
