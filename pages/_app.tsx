@@ -15,4 +15,6 @@ function App() {
 
 App.getInitialProps = NextApp.getInitialProps;
 
-export default withShowcase(App);
+export default withShowcase(App, {
+  SidebarHeader: () => <b>@ginterdev/next-showcase</b>,
+});
