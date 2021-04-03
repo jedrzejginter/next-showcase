@@ -66,7 +66,7 @@ const stories: ShowcaseStories = {
   'My First Story': () => <Button />,
   'My Story With Dark Mode': {
     dark: true,
-    story: () => <Button />,
+    Story: () => <Button />,
   },
 };
 

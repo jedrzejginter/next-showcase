@@ -12,6 +12,7 @@ import React, {
   ReactPortal,
   MouseEvent,
   useMemo,
+  ComponentType,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -26,7 +27,7 @@ export type ShowcaseStory = {
   dark?: boolean;
   title?: string | ReactElement;
   description?: string | ReactElement;
-  story: FunctionComponent<StoryProps>;
+  Story: FunctionComponent<StoryProps>;
 };
 
 type ShowcaseStoryOrComponent = ShowcaseStory | FunctionComponent<StoryProps>;
@@ -63,6 +64,11 @@ type ShowcaseProps = {
    * for example new stories file is found.
    */
   renderId: number;
+  /**
+   * User-defined component to render in sidebar. Useful for embedding
+   * company logo for example.
+   */
+  SidebarHeader?: ComponentType<{}>;
 };
 
 type CurrentStories = {
@@ -111,12 +117,16 @@ function getGroupOrderFactor(groupName: string): number {
     return 2;
   }
 
-  if (/views/i.test(groupName)) {
+  if (/forms/i.test(groupName)) {
     return 7;
   }
 
-  if (/pages/i.test(groupName)) {
+  if (/views/i.test(groupName)) {
     return 8;
+  }
+
+  if (/pages/i.test(groupName)) {
+    return 9;
   }
 
   return 9999;
@@ -159,7 +169,7 @@ function useBoolState(initialState: boolean) {
   return [value, setValue, toggle] as const;
 }
 
-function Showcase({ renderId, storiesModules }: ShowcaseProps) {
+function Showcase({ renderId, SidebarHeader, storiesModules }: ShowcaseProps) {
   const [
     currentModule,
     setCurrentModule,
@@ -234,11 +244,11 @@ function Showcase({ renderId, storiesModules }: ShowcaseProps) {
     rawStoryStruct === null
       ? null
       : typeof rawStoryStruct === 'function'
-      ? { story: rawStoryStruct }
+      ? { Story: rawStoryStruct }
       : rawStoryStruct;
 
   const StoryComponent: FunctionComponent<StoryProps> | null =
-    storyStruct === null ? null : storyStruct.story;
+    storyStruct === null ? null : storyStruct.Story;
 
   const handleModuleClick = useCallback(
     (evt: MouseEvent<HTMLButtonElement>) => {
@@ -318,6 +328,11 @@ function Showcase({ renderId, storiesModules }: ShowcaseProps) {
           Start of the sidebar with list of all components.
         */}
         <div className="showcase" id="showcase-nav">
+          {SidebarHeader ? (
+            <div id="showcase-nav-header">
+              <SidebarHeader />
+            </div>
+          ) : null}
           {groupedModules.map(({ group, modulesInGroup }) => (
             <div className="showcase-group" key={group}>
               <div className="showcase showcase-group-name">

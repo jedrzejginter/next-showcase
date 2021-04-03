@@ -7,9 +7,9 @@ import NextApp, {
 import React, { ComponentType, PropsWithChildren } from 'react';
 
 type WithShowcaseOptions = {
-  useRouter?: () => { pathname: string };
   Wrapper?: ComponentType<{ isShowcasePage?: boolean }>;
   skipInitialProps?: boolean;
+  SidebarHeader?: ComponentType<{}>;
 };
 
 type WithShowcaseAppShape<
@@ -27,7 +27,10 @@ function WrapperPlaceholder({ children }: PropsWithChildren<{}>) {
 
 /** Check if the `pathname` is showcase's pathname. */
 export function isShowcaseComponent(something: unknown): boolean {
-  return Object.prototype.hasOwnProperty.call(something, 'IS_SHOWCASE_PAGE');
+  return Object.prototype.hasOwnProperty.call(
+    something,
+    'IS_SHOWCASE_COMPONENT',
+  );
 }
 
 /**
@@ -42,6 +45,7 @@ export default function withShowcase<AppProps extends NextAppProps>(
 ) {
   const Wrapper = options.Wrapper ?? WrapperPlaceholder;
   const skipInitialProps = options.skipInitialProps ?? false;
+  const { SidebarHeader } = options;
 
   function NextAppWithShowcase(props: AppProps) {
     const { Component, pageProps } = props;
@@ -51,10 +55,12 @@ export default function withShowcase<AppProps extends NextAppProps>(
     // add some global contexts when needed.
     // This can be useful for notification system, when global context is
     // used and UI components are coupled to it.
-    if (Object.prototype.hasOwnProperty.call(Component, 'IS_SHOWCASE_PAGE')) {
+    if (
+      Object.prototype.hasOwnProperty.call(Component, 'IS_SHOWCASE_COMPONENT')
+    ) {
       return (
         <Wrapper isShowcasePage>
-          <Component {...pageProps} />
+          <Component {...pageProps} SidebarHeader={SidebarHeader} />
         </Wrapper>
       );
     }
