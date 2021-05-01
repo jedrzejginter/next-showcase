@@ -1,9 +1,25 @@
 #!/usr/bin/env node
-const { mkdirSync, writeFileSync } = require('fs');
+const { existsSync, mkdirSync, writeFileSync } = require('fs');
 const globby = require('globby');
+const importCwd = require('import-cwd');
 const { dirname } = require('path');
 
 const allStoriesPaths = globby.sync(['src/**/*.stories.(j|t)sx']);
+
+const CONF_FILE = '.ginterdevrc.js';
+let showcaseDir = '_next-showcase';
+
+if (existsSync(CONF_FILE)) {
+  try {
+    const ginterdevrc = importCwd(`./${CONF_FILE}`);
+
+    if (ginterdevrc['next-showcase']) {
+      showcaseDir = ginterdevrc['next-showcase'].entryDir || showcaseDir;
+    }
+  } catch {
+    // Couldn't read config file
+  }
+}
 
 function getGroupNameFromPath(storiesPath) {
   if (/\/atoms\//i.test(storiesPath)) {
@@ -119,7 +135,7 @@ ShowcasePage.IS_SHOWCASE_COMPONENT = true;
 `;
 
 // written in process.cwd() context
-const targetFile = 'pages/_next-showcase/index.tsx';
+const targetFile = `pages/${showcaseDir}/index.tsx`;
 
 mkdirSync(dirname(targetFile), { recursive: true });
 writeFileSync(targetFile, file.trim(), 'utf-8');

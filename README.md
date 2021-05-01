@@ -87,3 +87,20 @@ npx @ginterdev/next-showcase
 ---
 
 Make sure to add `pages/_next-showcase` to your `.gitignore`.
+
+## Customizing
+
+You can set your own pathname instead of default `/_next-showcase` by specifying a configuration option in `.ginterdevrc.js` file:
+
+```js
+// .ginterdevrc.js
+
+module.exports = {
+  'next-showcase': {
+    entryDir: 'ui-kit',
+  },
+};
+```
+
+Now your stories will be accessible under `/ui-kit`.\
+<small>(Notice that now you have to _gitignore_ `pages/ui-kit` instead of `pages/_next-showcase`).</small>
