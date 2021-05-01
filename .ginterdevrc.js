@@ -1,5 +1,5 @@
 module.exports = {
   'next-showcase': {
-    entryDxir: 'ui-kit',
+    entryDir: 'ui-kit',
   },
 };
